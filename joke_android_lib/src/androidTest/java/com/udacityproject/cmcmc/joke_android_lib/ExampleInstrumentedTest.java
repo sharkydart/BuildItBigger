@@ -1,4 +1,4 @@
-package com.udacityproject.cmcmc.jokereceiver;
+package com.udacityproject.cmcmc.joke_android_lib;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.udacityproject.cmcmc.jokereceiver.test", appContext.getPackageName());
+        assertEquals("com.udacityproject.cmcmc.joke_android_lib.test", appContext.getPackageName());
     }
 }

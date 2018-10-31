@@ -1,4 +1,4 @@
-package com.udacityproject.cmcmc.jokereceiver;
+package com.udacityproject.cmcmc.joke_android_lib;
 
 import org.junit.Test;
 

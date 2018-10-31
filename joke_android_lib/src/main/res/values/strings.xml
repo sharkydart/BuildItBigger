@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">joke_android_lib</string>
+    <string name="title_activity_joke_from_intent">ActivityJokeFromIntent</string>
+</resources>

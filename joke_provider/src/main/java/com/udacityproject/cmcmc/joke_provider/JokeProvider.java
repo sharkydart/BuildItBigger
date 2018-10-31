@@ -1,7 +1,5 @@
 package com.udacityproject.cmcmc.joke_provider;
 
-import java.util.Random;
-
 public class JokeProvider {
     public String makeJoke(){
         //send a random joke, of the desired type, from the joke repository
