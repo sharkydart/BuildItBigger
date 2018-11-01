@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.udacityproject.cmcmc.joke_android_lib">
+
+    <application>
+        <activity
+            android:name=".ActivityJokeFromIntent"
+            android:label="@string/title_activity_joke_from_intent"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+    </application>
+
+</manifest>
