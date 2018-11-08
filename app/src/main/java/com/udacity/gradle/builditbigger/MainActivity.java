@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.MobileAds;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MobileAds.initialize(this, "ca-app-pub-4988916255447155~3995113466");
     }
 
 
@@ -69,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> {
-        private static MyApi myApiService = null;
+        private MyApi myApiService = null;
         private Context context;
 
         @Override
@@ -103,8 +106,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String result) {
-            Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+        protected void onPostExecute(String theResult) {
+//            JokeProvider comedian = new JokeProvider();
+//
+//            Intent intent = new Intent(context, ActivityJokeFromIntent.class);
+//            intent.putExtra(ActivityJokeFromIntent.THE_JOKE, theResult);
+//            context.startActivity(intent);
+
+            Toast.makeText(context, theResult, Toast.LENGTH_LONG).show();
         }
     }
 }
