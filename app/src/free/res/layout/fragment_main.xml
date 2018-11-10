@@ -22,4 +22,30 @@
         android:onClick="tellJoke"
         android:text="@string/button_text" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:weightSum="2">
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_ad_unit_id" />
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adViewTest"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/test_banner_unit_id" />
+    </LinearLayout>
+
+
 </RelativeLayout>
