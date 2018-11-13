@@ -2,6 +2,7 @@ package com.udacity.gradle.builditbigger;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.session.PlaybackState;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,11 +25,8 @@ import com.udacityproject.cmcmc.joke_android_lib.ActivityJokeFromIntent;
 import java.io.IOException;
 
 
-public class MainActivity extends AppCompatActivity {
-    private static String mJokeReceived = "";
-    public String getmJokeReceived(){
-        return mJokeReceived;
-    }
+public class MainActivity extends AppCompatActivity implements JokeGetTaskListener {
+
     @Nullable private SimpleIdlingResource mIdlingResource;
     /**
      * Only called from test, creates and returns a new {@link SimpleIdlingResource}.
@@ -73,74 +71,84 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tellJoke(android.view.View view) {
-//        JokeProvider comedian = new JokeProvider();
-//        Toast.makeText(this, comedian.makeJoke(), Toast.LENGTH_SHORT).show();
-        passJokeToAndroidLibrary(view.getContext());
+        new JokesAsyncTask().execute(this);
     }
-    public void passJokeToAndroidLibrary(Context theContext)
-    {
-//        JokeProvider comedian = new JokeProvider();
+
+    @Override
+    public void onComplete(String potentialJoke) {
+        Log.d("fart", "jokes and jokes and jokes!");
+        Log.d("fart", potentialJoke);
+        Intent intent = new Intent(this, ActivityJokeFromIntent.class);
+        intent.putExtra(ActivityJokeFromIntent.THE_JOKE, potentialJoke);
+        this.startActivity(intent);
+    }
+
+//    public class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> {
+//        private MyApi myApiService = null;
+//        private Context context;
+//        private JokeGetTaskListener mJokeListener = null;
 //
-//        Intent intent = new Intent(theContext, ActivityJokeFromIntent.class);
-//        intent.putExtra(ActivityJokeFromIntent.THE_JOKE, comedian.makeJoke());
-//        theContext.startActivity(intent);
-        String jokeQuality = "free";
-
-        new EndpointsAsyncTask().execute(new Pair<Context, String>(theContext, jokeQuality));
-    }
-
-    class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> {
-        private MyApi myApiService = null;
-        private Context context;
-
-        @Override
-        protected String doInBackground(Pair<Context, String>... params) {
-            if(mIdlingResource != null)
-                mIdlingResource.setIdleState(false);
-
-            if(myApiService == null) {  // Only do this once
-                MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
-                        new AndroidJsonFactory(), null)
-                        // options for running against local devappserver
-                        // - 10.0.2.2 is localhost's IP address in Android emulator
-                        // - turn off compression when running against local devappserver
-                        .setRootUrl("http://10.0.2.2:8080/_ah/api/")
-                        .setApplicationName("ca-app-pub-4988916255447155~3995113466")
-                        .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-                            @Override
-                            public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
-                                abstractGoogleClientRequest.setDisableGZipContent(true);
-                            }
-                        });
-                // end options for devappserver
-
-                myApiService = builder.build();
-            }
-
-            context = params[0].first;
-            String name = params[0].second;
-            Log.d("fart", "input: " + name);
-
-            try {
-                String theResponse = myApiService.sayHi(name).execute().getData();
-                Log.d("fart", "Joke: " + theResponse);
-                mJokeReceived = theResponse;
-                return theResponse;
-            } catch (IOException e) {
-                return e.getMessage();
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String theResult) {
-//            JokeProvider comedian = new JokeProvider();
-//            ((TextView)findViewById(R.id.tvJokeTest)).setText(theResult);
-            Intent intent = new Intent(context, ActivityJokeFromIntent.class);
-            intent.putExtra(ActivityJokeFromIntent.THE_JOKE, theResult);
-            context.startActivity(intent);
-            if(mIdlingResource != null)
-                mIdlingResource.setIdleState(true);
-        }
-    }
+//        //a way to set the listener
+//        public EndpointsAsyncTask setListener(JokeGetTaskListener listener) {
+//            this.mJokeListener = listener;
+//            return this;
+//        }
+//
+//        @Override
+//        protected String doInBackground(Pair<Context, String>... params) {
+//            if(mIdlingResource != null)
+//                mIdlingResource.setIdleState(false);
+//
+//            if(myApiService == null) {  // Only do this once
+//                MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
+//                        new AndroidJsonFactory(), null)
+//                        // options for running against local devappserver
+//                        // - 10.0.2.2 is localhost's IP address in Android emulator
+//                        // - turn off compression when running against local devappserver
+//                        .setRootUrl("http://10.0.2.2:8080/_ah/api/")
+//                        .setApplicationName("ca-app-pub-4988916255447155~3995113466")
+//                        .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+//                            @Override
+//                            public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
+//                                abstractGoogleClientRequest.setDisableGZipContent(true);
+//                            }
+//                        });
+//                // end options for devappserver
+//
+//                myApiService = builder.build();
+//            }
+//
+//            context = params[0].first;
+//            String name = params[0].second;
+//
+//            try {
+//                String theResponse = myApiService.sayHi(name).execute().getData();
+//                Log.d("fart", "Joke: " + theResponse);
+//                return theResponse;
+//            } catch (IOException e) {
+//                return e.getMessage();
+//            }
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String theResult) {
+//            if (this.mJokeListener != null)
+//                this.mJokeListener.onComplete(theResult);
+//
+//            Intent intent = new Intent(context, ActivityJokeFromIntent.class);
+//            intent.putExtra(ActivityJokeFromIntent.THE_JOKE, theResult);
+//            context.startActivity(intent);
+//            if(mIdlingResource != null)
+//                mIdlingResource.setIdleState(true);
+//        }
+//
+//        @Override
+//        protected void onCancelled() {
+//            if (this.mJokeListener != null) {
+//                this.mJokeListener.onComplete(null);
+//            }
+//            super.onCancelled();
+//        }
+//    }
 
 }

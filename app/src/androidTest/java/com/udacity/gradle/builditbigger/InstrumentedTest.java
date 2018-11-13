@@ -50,7 +50,6 @@ public class InstrumentedTest {
     public void clickButton_GetsJokeAndAssignsToTextViewWhereItsContentCanBeDeterminedToNotBeEmpty(){
         onView(withId(R.id.instructions_text_view)).perform(ViewActions.click());
 
-        assertNotNull(mActivityTestRule.getActivity().getmJokeReceived());
     }
     @After
     public void unregisterIdlingResource(){
